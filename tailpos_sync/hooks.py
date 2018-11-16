@@ -81,19 +81,15 @@ app_license = "MIT"
 
 doc_events = {
     "User": {
-        "after_insert": "tailpos_erpnext.events.add_role",
+        "after_insert": "tailpos_sync.events.add_role",
     },
     "Receipts": {
-        "on_update": "tailpos_erpnext.utils.generate_sales_invoice_from_receipt"
+        "on_update": "tailpos_sync.utils.generate_sales_invoice_from_receipt"
     },
-    "before_save": {
-        "autoname": "tailpos_erpnext.syncPOS.autoname_item",
-        "validate": "tailpos_erpnext.syncPOS.save_item",
-        "after_insert": "tailpos_erpnext.syncPOS.after_insert",
-        "on_update": "tailpos_erpnext.syncPOS.on_update",
-        "on_trash": "tailpos_erpnext.syncPOS.on_trash",
-        "before_save": "tailpos_erpnext.syncPOS.before_save",
-    }
+    "Item": {
+        "autoname": "tailpos_sync.utils.autoname_item",
+        "validate": "tailpos_sync.utils.save_item",
+    },
 }
 
 # Scheduled Tasks

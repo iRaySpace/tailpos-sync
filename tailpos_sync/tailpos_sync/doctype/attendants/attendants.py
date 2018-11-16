@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from tailpos_sync.events import document_on_update, document_on_trash, document_on_save
-
+import uuid
 class Attendants(Document):
 	def autoname(self):
 		if not self.id:

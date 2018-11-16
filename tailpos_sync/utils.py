@@ -1,4 +1,6 @@
+
 import frappe,json
+import uuid
 
 
 def generate_sales_invoice_daily():
@@ -147,7 +149,7 @@ def sync_now():
     settings = frappe.get_doc('TailPOS Settings', 'TailPOS Settings')
 
     if settings.sales_invoice == 'By Daily Batch':
-        enqueue('tailpos_erpnext.tailpos.generate_sales_invoice_today', timeout=2000, queue='long')
+        enqueue('tailpos_sync.tailpos.generate_sales_invoice_today', timeout=2000, queue='long')
 
 
 def shifts_by_date(date):
@@ -168,3 +170,18 @@ def exists_sales_invoice_by_receipt(receipt):
     if sales_invoices:
         return True
     return False
+
+
+@frappe.whitelist()
+def save_item(doc,method):
+    if doc.date_updated == None:
+        print("sdadasdasd")
+        doc.date_updated = doc.modified
+
+@frappe.whitelist()
+def autoname_item(doc,method):
+    print("autonaaame")
+    if not doc.id:
+        doc.id = 'Item/' + str(uuid.uuid4())
+    doc.name = doc.id
+    print("niabot man")

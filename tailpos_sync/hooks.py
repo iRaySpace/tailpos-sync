@@ -80,7 +80,20 @@ app_license = "MIT"
 # Hook on document methods and events
 
 doc_events = {
-
+    "User": {
+        "after_insert": "tailpos_erpnext.events.add_role",
+    },
+    "Receipts": {
+        "on_update": "tailpos_erpnext.utils.generate_sales_invoice_from_receipt"
+    },
+    "before_save": {
+        "autoname": "tailpos_erpnext.syncPOS.autoname_item",
+        "validate": "tailpos_erpnext.syncPOS.save_item",
+        "after_insert": "tailpos_erpnext.syncPOS.after_insert",
+        "on_update": "tailpos_erpnext.syncPOS.on_update",
+        "on_trash": "tailpos_erpnext.syncPOS.on_trash",
+        "before_save": "tailpos_erpnext.syncPOS.before_save",
+    }
 }
 
 # Scheduled Tasks
@@ -119,3 +132,4 @@ scheduler_events = {
 # 	"frappe.desk.doctype.event.event.get_events": "tailpos_erpnext.event.get_events"
 # }
 
+fixtures = ["Custom Field"]

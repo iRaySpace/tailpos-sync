@@ -45,8 +45,10 @@ class Discounts(Document):
             if len(exists) > 0:
                 frappe.throw(_("Discount already exist!"))
         if self.date_updated == None:
-            print("sdadasdasd")
-            self.date_updated = self.modified
+            try:
+                self.date_updated = self.modified
+            except Exception:
+                print(frappe.get_traceback())
     def on_update(self):
 
         flags = self.__dict__['flags']

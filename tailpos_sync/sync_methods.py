@@ -69,37 +69,48 @@ def insert_data(i,data,frappe_table,receipt_total):
         frappe_table.insert(ignore_permissions=True)
     except Exception:
         print(frappe.get_traceback())
+
 def deleted_documents():
     tables = ["Item", "Categories", "Discounts", "Attendants", "Customer"]
     tableNames = ["Items", "Categories", "Discounts", "Attendants", "Customer"]
     returnArray = []
+
     for i in range(0,len(tables)):
 
         data = frappe.db.sql(""" SELECT data FROM `tabDeleted Document` WHERE deleted_doctype=%s""", (tables[i]),as_dict=True)
 
         for x in data:
-            if json.loads(x.data)['id'] != None and x.sync_status == None:
-                returnArray.append({
-                    'tableNames': tableNames[i],
-                    '_id': json.loads(x.data)['id']
-                })
-            frappe.db.sql(""" UPDATE `tabDeleted Document` SET sync_status=%s WHERE data=%s""",('true',x.data), as_dict=True)
+
+            try:
+                if json.loads(x.data)['id'] != None and x.sync_status == None:
+                    returnArray.append({
+                        'tableNames': tableNames[i],
+                        '_id': json.loads(x.data)['id']
+                    })
+            except Exception:
+                print(frappe.get_traceback())
+            try:
+                frappe.db.sql(""" UPDATE `tabDeleted Document` SET sync_status=%s WHERE data=%s""",('true',x.data), as_dict=True)
+            except Exception:
+                print(frappe.get_traceback())
 
     return returnArray
 
 def force_sync_from_erpnext_to_tailpos():
+    try:
+        tableNames = ['Item','Categories','Discounts','Attendants', "Customer"]
+        data = []
+        for i in tableNames:
+            dataFromDb = frappe.db.sql("SELECT * FROM `tab" + i + "`", as_dict=True)
 
-    tableNames = ['Item','Categories','Discounts','Attendants', "Customer"]
-    data = []
-    for i in tableNames:
-        dataFromDb = frappe.db.sql("SELECT * FROM `tab" + i + "`", as_dict=True)
-
-        for x in dataFromDb:
-            data.append({
-                'tableNames': i,
-                'syncObject': x
-            })
-            frappe.db.sql("UPDATE `tab" + i + "` SET `date_updated`=`modified` where id=%s", (x.id))
+            for x in dataFromDb:
+                data.append({
+                    'tableNames': i,
+                    'syncObject': x
+                })
+                frappe.db.sql("UPDATE `tab" + i + "` SET `date_updated`=`modified` where id=%s", (x.id))
+    except Exception:
+        print(frappe.get_traceback())
     return data
 
 def sync_from_erpnext_to_tailpos():
@@ -191,3 +202,24 @@ def add_receipt_lines(data,i):
                 except Exception:
                     print(frappe.get_traceback())
     return receipt_total
+
+def uom_check():
+    each = frappe.db.sql(""" SELECT * FROM `tabUOM` WHERE name='Each'""")
+
+    if len(each) == 0:
+        try:
+            frappe.get_doc({
+                'doctype': 'UOM',
+                'name': 'Each',
+                'uom_name': 'Each'
+            }).insert(ignore_permissions=True)
+        except Exception:
+            print(frappe.get_traceback())
+
+    weight = frappe.db.sql(""" SELECT * FROM `tabUOM` WHERE name='Weight'""")
+    if len(weight) == 0:
+        frappe.get_doc({
+            'doctype': 'UOM',
+            'name': 'Weight',
+            'uom_name': 'Weight'
+        }).insert(ignore_permissions=True)

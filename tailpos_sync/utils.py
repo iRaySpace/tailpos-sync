@@ -175,13 +175,22 @@ def exists_sales_invoice_by_receipt(receipt):
 @frappe.whitelist()
 def save_item(doc,method):
     if doc.date_updated == None:
-        print("sdadasdasd")
         doc.date_updated = doc.modified
 
 @frappe.whitelist()
 def autoname_item(doc,method):
-    print("autonaaame")
     if not doc.id:
         doc.id = 'Item/' + str(uuid.uuid4())
     doc.name = doc.id
-    print("niabot man")
+
+@frappe.whitelist()
+def save_customer(doc, method):
+
+    try:
+        doc.customer_group = 'All Customer Group'
+    except Exception:
+        print(frappe.get_traceback())
+    try:
+        doc.territory = 'All Territories'
+    except Exception:
+        print(frappe.get_traceback())

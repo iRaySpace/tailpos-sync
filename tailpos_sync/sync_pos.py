@@ -4,7 +4,8 @@ import datetime
 
 @frappe.whitelist()
 def sync_data(data):
-
+    #Check if there is Each and Weight in UOM
+    uom_check()
     #Check if there are latest deleted records
     deleted_records = deleted_documents()
 
@@ -30,15 +31,19 @@ def sync_data(data):
             else:
                 frappe_table = create_doc(data['tailposData'],i)
             #Check modified time
+
+
             update_data = check_modified(data['tailposData'][i]['syncObject']['dateUpdated'],frappe_table)
 
             if update_data:
                 #Insert data
+
                 insert_data(i,data['tailposData'],frappe_table,receipt_total)
 
     erpnext_data = ""
     if data['typeOfSync'] == "forceSync":
         #Fetch all data in ERPNext for selected tables
+
         erpnext_data = force_sync_from_erpnext_to_tailpos()
 
     elif data['typeOfSync'] == "sync":

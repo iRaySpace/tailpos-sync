@@ -16,4 +16,9 @@ class Payments(Document):
 	def validate(self):
 		if self.date_updated == None:
 			print("sdadasdasd")
-			self.date_updated = self.modified
+			try:
+				print("sjhgdjakshdkashdkashdkjahsdkjh")
+				self.date_updated = self.modified
+			except Exception:
+				print("jhsdj")
+				print(frappe.get_traceback())

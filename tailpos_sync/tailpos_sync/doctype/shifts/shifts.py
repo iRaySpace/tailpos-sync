@@ -14,5 +14,4 @@ class Shifts(Document):
 		self.name = self.id
 	def validate(self):
 		if self.date_updated == None:
-			print("sdadasdasd")
 			self.date_updated = self.modified

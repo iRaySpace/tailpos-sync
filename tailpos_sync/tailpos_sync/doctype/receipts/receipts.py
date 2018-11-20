@@ -3,6 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+import frappe
 from frappe.model.document import Document
 import uuid
 
@@ -10,12 +11,11 @@ import uuid
 class Receipts(Document):
 	def validate(self):
 		if self.date_updated == None:
-			print("sdadasdasd")
-			self.date_updated = self.modified
 
-		if self.receipt_lines:
-			print("RECEEEEEEEEEIPT LIIIIINEEES VALIDATE")
-			print(self.receipt_lines)
+			try:
+				self.date_updated = self.modified
+			except Exception:
+				print(frappe.get_traceback())
 	def set_default_values(self):
 		"""Set the status as title-d form"""
 		if self.flags.in_insert:

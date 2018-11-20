@@ -42,8 +42,10 @@ class Attendants(Document):
 			except:
 				frappe.throw(_("PIN Code should be a number."))
 		if self.date_updated == None:
-			print("sdadasdasd")
-			self.date_updated = self.modified
-
+			try:
+				self.date_updated = self.modified
+			except Exception:
+				print(frappe.get_traceback())
+		print("akjshdkjashd")
 	def on_trash(self):
 		document_on_trash(self)

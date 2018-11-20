@@ -39,8 +39,6 @@ class Categories(Document):
         document_on_save(skeleton_doc, self.__dict__['doctype'])
 
     def validate(self):
-        print("Category")
-        print(self.date_updated == None)
         flags = self.__dict__['flags']
 
         if flags.in_insert:
@@ -48,7 +46,6 @@ class Categories(Document):
             if exists.count:
                 frappe.throw(_("Category already exist!"))
         if self.date_updated == None:
-            print("Categorieees")
             self.date_updated = self.modified
     def before_save(self):
         # self.syncstatus = "false"

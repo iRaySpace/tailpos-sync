@@ -90,6 +90,9 @@ doc_events = {
         "autoname": "tailpos_sync.utils.autoname_item",
         "validate": "tailpos_sync.utils.save_item",
     },
+    "Customer": {
+        "validate": "tailpos_sync.utils.save_customer",
+    },
 }
 
 # Scheduled Tasks

@@ -229,4 +229,7 @@ def uom_check():
 
 def get_category(id):
     data = frappe.db.sql(""" SELECT description FROM `tabCategories` WHERE id=%s """, (id),as_dict=True)
-    return data[0]['description']
+    data_value = ""
+    if data[0]['description']:
+        data_value = data[0]['description']
+    return data_value

@@ -12,9 +12,7 @@ import json
 
 class Categories(Document):
     def autoname(self):
-        if not self.id:
-            self.id = 'Category/' + str(uuid.uuid4())
-        self.name = self.id
+        self.name = self.description
 
     def after_insert(self):
 

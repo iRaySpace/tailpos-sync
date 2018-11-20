@@ -87,7 +87,6 @@ doc_events = {
         "on_update": "tailpos_sync.utils.generate_sales_invoice_from_receipt"
     },
     "Item": {
-        "autoname": "tailpos_sync.utils.autoname_item",
         "validate": "tailpos_sync.utils.save_item",
     },
     "Customer": {

@@ -11,9 +11,7 @@ import uuid
 
 class Discounts(Document):
     def autoname(self):
-        if not self.id:
-            self.id = 'Discount/' + str(uuid.uuid4())
-        self.name = self.id
+        self.name = self.description
 
     def after_insert(self):
 

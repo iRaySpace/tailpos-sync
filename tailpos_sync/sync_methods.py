@@ -34,6 +34,9 @@ def insert_data(i,data,frappe_table,receipt_total):
         elif data[i]['dbName'] == "Customer":
             if field_name == "name":
                 field_name = "customer_name"
+        if field_name == "category":
+            category_value = get_category(value)
+            value = category_value
         if value == "No Category":
             value = ""
         if value == "fixDiscount":
@@ -223,3 +226,7 @@ def uom_check():
             'name': 'Weight',
             'uom_name': 'Weight'
         }).insert(ignore_permissions=True)
+
+def get_category(id):
+    data = frappe.db.sql(""" SELECT description FROM `tabCategories` WHERE id=%s """, (id),as_dict=True)
+    return data[0]['description']

@@ -9,9 +9,7 @@ from tailpos_sync.events import document_on_update, document_on_trash, document_
 import uuid
 class Attendants(Document):
 	def autoname(self):
-		if not self.id:
-			self.id = 'Attendant/' + str(uuid.uuid4())
-		self.name = self.id
+		self.name = self.user_name + "-" + self.role
 
 	def after_insert(self):
 
@@ -28,9 +26,6 @@ class Attendants(Document):
 
 	def validate(self):
 		# self.syncstatus = "false"
-		print("PPPIIIINNNSSS")
-		print(self.modified)
-		print(self.date_updated == None)
 		if self.pin_code != None:
 			length = len(self.pin_code)
 
@@ -46,6 +41,5 @@ class Attendants(Document):
 				self.date_updated = self.modified
 			except Exception:
 				print(frappe.get_traceback())
-		print("akjshdkjashd")
 	def on_trash(self):
 		document_on_trash(self)

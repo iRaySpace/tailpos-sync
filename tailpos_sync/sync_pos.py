@@ -49,7 +49,7 @@ def sync_data(data):
     elif data['typeOfSync'] == "sync":
         #Fetch Updated or Added data in ERPNext for selected tables
         erpnext_data = sync_from_erpnext_to_tailpos()
-
+    print("WHYYYYY")
     return {"data": {"data": erpnext_data, "deleted_documents": deleted_records}}
 
 def check_modified(data,frappe_table):

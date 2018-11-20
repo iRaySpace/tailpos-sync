@@ -178,12 +178,6 @@ def save_item(doc,method):
         doc.date_updated = doc.modified
 
 @frappe.whitelist()
-def autoname_item(doc,method):
-    if not doc.id:
-        doc.id = 'Item/' + str(uuid.uuid4())
-    doc.name = doc.id
-
-@frappe.whitelist()
 def save_customer(doc, method):
 
     try:

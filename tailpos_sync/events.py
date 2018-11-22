@@ -10,7 +10,7 @@ server_url = "https://admin:qwerty@db.tailpos.com"
 
 def send_message(message, number):
     params = (
-        ('apikey', '64229633532ecd99ddada36b000ac85f'),
+        ('apikey', 'xxxxxxxxxxx'),
         ('sendername', 'TAILPOS'),
         ('message', message),
         ('number', number)

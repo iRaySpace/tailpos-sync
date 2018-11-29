@@ -2,6 +2,20 @@ from sync_methods import *
 import frappe
 import datetime
 
+
+@frappe.whitelist()
+def pull_data(data):
+    query = "SELECT name FROM `tab{0}`".format(data['doctype'])
+
+    if data['doctype'] == "Item":
+        query = "SELECT name, description, standard_rate FROM `tabItem` WHERE disabled=0"
+
+    # Getting the resources
+    res = frappe.db.sql(query, as_dict=True)
+
+    return {"data": res}
+
+
 @frappe.whitelist()
 def sync_data(data):
     #Check if there is Each and Weight in UOM
